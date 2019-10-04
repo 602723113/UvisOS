@@ -42,30 +42,15 @@ public class UvisOS extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
     public static void main(String[] args) {
         // CQ此变量为特殊变量，在JCQ启动时实例化赋值给每个插件，而在测试中可以用CQDebug类来代替他
         CQ = new CQDebug();//new CQDebug("应用目录","应用名称") 可以用此构造器初始化应用的目录
-        CQ.logInfo("UvisOS", "[UvisOS] 系统正在开启当中...");// 现在就可以用CQ变量来执行任何想要的操作了
+        // 现在就可以用CQ变量来执行任何想要的操作了
         // 要测试主类就先实例化一个主类对象
         UvisOS demo = new UvisOS();
         // 下面对主类进行各方法测试,按照JCQ运行过程，模拟实际情况
         demo.startup();// 程序运行开始 调用应用初始化方法
         demo.enable();// 程序初始化完成后，启用应用，让应用正常工作
-        // 开始模拟发送消息
-        // 模拟私聊消息
-        // 开始模拟QQ用户发送消息，以下QQ全部编造，请勿添加
-        demo.privateMsg(0, 10001, 2234567819L, "小姐姐约吗", 0);
-        demo.privateMsg(0, 10002, 2222222224L, "喵呜喵呜喵呜", 0);
-        demo.privateMsg(0, 10003, 2111111334L, "可以给我你的微信吗", 0);
-        demo.privateMsg(0, 10004, 3111111114L, "今天天气真好", 0);
-        demo.privateMsg(0, 10005, 3333333334L, "你好坏，都不理我QAQ", 0);
-        // 模拟群聊消息
-        // 开始模拟群聊消息
-        demo.groupMsg(0, 10006, 3456789012L, 3333333334L, "", "菜单", 0);
-        demo.groupMsg(0, 10008, 3456789012L, 11111111114L, "", "小喵呢，出来玩玩呀", 0);
-        demo.groupMsg(0, 10009, 427984429L, 3333333334L, "", "[CQ:at,qq=2222222224] 来一起玩游戏，开车开车", 0);
-        demo.groupMsg(0, 10010, 427984429L, 3333333334L, "", "好久不见啦 [CQ:at,qq=11111111114]", 0);
-        demo.groupMsg(0, 10011, 427984429L, 11111111114L, "", "qwq 有没有一起开的\n[CQ:at,qq=3333333334]你玩嘛", 0);
-        // ......
-        // 依次类推，可以根据实际情况修改参数，和方法测试效果
-        // 以下是收尾触发函数
+        demo.privateMsg(0, 10001, 602723113L, "/weather 南宁", 0);
+        demo.privateMsg(0, 10002, 602723113L, "/ping 163.177.151.110:80", 0);
+        demo.privateMsg(0, 10002, 602723113L, "/ping 180.101.49.11", 0);
         // demo.disable();// 实际过程中程序结束不会触发disable，只有用户关闭了此插件才会触发
         demo.exit();// 最后程序运行结束，调用exit方法
     }

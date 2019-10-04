@@ -1,9 +1,10 @@
 package cc.zoyn.uvisos.handler;
 
 import cc.zoyn.uvisos.UvisOS;
+import cc.zoyn.uvisos.util.PingUtils;
 import cc.zoyn.uvisos.util.QRCodeUtils;
+import cc.zoyn.uvisos.util.WeatherUtils;
 import cc.zoyn.uvisos.util.eval.MathEvalUtils;
-import cc.zoyn.uvisos.util.eval.ScriptContainsEnglishException;
 import cc.zoyn.uvisos.util.eval.ScriptContainsErrorKeywordExcpetion;
 import com.sobte.cqp.jcq.entity.CQImage;
 
@@ -81,7 +82,34 @@ public class PrivateMsgHandler extends Handler {
             return;
         }
         if (msg.startsWith("/ping")) {
+            String content = processCommand(msg, "/ping").trim();
+            if (content.equalsIgnoreCase("") || content.isEmpty()) {
+                CQ.sendPrivateMsg(fromQQ, "请输入 IP:端口 格式的内容!");
+                return;
+            }
+            // 现在应该是 ip:端口
+            if (content.contains(":")) {
+                String[] temp = content.split(":");
+                long time = PingUtils.ping(temp[0], Integer.parseInt(temp[1]), 200);
+                if (time == -1) {
+                    CQ.sendPrivateMsg(fromQQ, "连接超时!");
+                    return;
+                }
+                CQ.sendPrivateMsg(fromQQ, "连接延迟: " + time + "ms");
+            } else {
+                CQ.sendPrivateMsg(fromQQ, "请附加端口! 默认端口可填写 80端口");
+            }
+            return;
+        }
+        if (msg.startsWith("/weather")) {
+            String content = processCommand(msg, "/weather").trim();
+            if (content.equalsIgnoreCase("") || content.isEmpty()) {
+                CQ.sendPrivateMsg(fromQQ, "请输入城市名!");
+                return;
+            }
 
+            WeatherUtils.request(content, fromQQ);
+            return;
         }
 
         CQ.sendPrivateMsg(fromQQ, "[UvisOS] 抱歉, 我貌似没听懂你想说什么, 请输入/help来获取帮助!");

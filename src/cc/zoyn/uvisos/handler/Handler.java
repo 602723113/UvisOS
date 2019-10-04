@@ -8,14 +8,15 @@ import java.util.Date;
 
 public abstract class Handler {
 
-    static CoolQ CQ = JcqApp.CQ;
+    public static CoolQ CQ = JcqApp.CQ;
     private static final SimpleDateFormat FORMAT = new SimpleDateFormat("HH");
     private static final String HELP_MSG = " %s\n" +
             "/help 查询帮助\n" +
             "/eval <表达式> 使用给定的数学表达式进行运算\n" +
             "/qrcode <内容> 使用给定的内容对进行编码成二维码\n" +
             "/deqrcode <二维码> 使用给定的二维码进行解码\n" +
-//            "/ping <域名/ip> <端口> <等待时间(默认200)>\n" +
+            "/weather <城市名> 使用给定的城市名获取天气\n" +
+            "/ping <域名/ip>:<端口>\n" +
             "UvisOS Powered By Zoyn";
 
     private static String getWelcomeMsg() {

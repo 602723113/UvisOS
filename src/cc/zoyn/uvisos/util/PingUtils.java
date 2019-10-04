@@ -10,15 +10,16 @@ public class PingUtils {
 
     private static Map<String, Short> times = new HashMap<>();
 
-    public synchronized static boolean ping(String ip, int port, int timeout) {
+    public synchronized static long ping(String ip, int port, int timeout) {
         Socket server = new Socket();
         InetSocketAddress address = new InetSocketAddress(ip, port);
+        long temp = System.currentTimeMillis();
         try {
             server.connect(address, timeout);
             server.close();
-            return true;
+            return System.currentTimeMillis() - temp;
         } catch (IOException e) {
-            return false;
+            return -1;
         }
     }
 
