@@ -166,7 +166,7 @@ public class UvisOS extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
      */
     public int groupMsg(int subType, int msgId, long fromGroup, long fromQQ, String fromAnonymous, String msg,
                         int font) {
-        if (fromGroup != 610350296L) {
+        if (fromGroup != 766342327) {
             return MSG_IGNORE;
         }
 

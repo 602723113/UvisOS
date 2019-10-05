@@ -1,7 +1,7 @@
 package cc.zoyn.uvisos.handler;
 
 import cc.zoyn.uvisos.UvisOS;
-import cc.zoyn.uvisos.util.QRCodeUtils;
+import cc.zoyn.uvisos.util.*;
 import cc.zoyn.uvisos.util.eval.MathEvalUtils;
 import cc.zoyn.uvisos.util.eval.ScriptContainsEnglishException;
 import cc.zoyn.uvisos.util.eval.ScriptContainsErrorKeywordExcpetion;
@@ -76,6 +76,55 @@ public class GroupMsgHandler extends Handler {
             } catch (Exception e) {
                 CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "出现了预期之外的错误! 请检查你所输入的内容!");
             }
+        }
+        if (msg.startsWith("/ping")) {
+            String content = processCommand(msg, "/ping").trim();
+            if (content.equalsIgnoreCase("") || content.isEmpty()) {
+                CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "请输入 IP:端口 格式的内容!");
+                return;
+            }
+            // 现在应该是 ip:端口
+            if (content.contains(":")) {
+                String[] temp = content.split(":");
+                long time = PingUtils.ping(temp[0], Integer.parseInt(temp[1]), 200);
+                if (time == -1) {
+                    CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "连接超时!");
+                    return;
+                }
+                CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "连接延迟: " + time + "ms");
+            } else {
+                CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "请附加端口! 默认端口可填写 80端口");
+            }
+            return;
+        }
+        if (msg.startsWith("/weather")) {
+            String content = processCommand(msg, "/weather").trim();
+            if (content.equalsIgnoreCase("") || content.isEmpty()) {
+                CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "请输入城市名!");
+                return;
+            }
+
+            Weather weather = WeatherUtils.request(content);
+            if (weather == null) {
+                CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "未找到相关数据!");
+                return;
+            }
+            CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + weather.getWeatherType() + " " + weather.getLow() + "°C" + "-" + weather.getHigh() + "°C");
+            return;
+        }
+        if (msg.startsWith("/getcover")) {
+            String content = processCommand(msg, "/getcover").trim();
+            if (content.equalsIgnoreCase("") || content.isEmpty()) {
+                CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "请输入城市名!");
+                return;
+            }
+
+            String result = BilibiliUtils.getBilibiliVideoCover(content);
+            if (result == null) {
+                CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "未找到相关数据!");
+                return;
+            }
+            CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + result);
         }
     }
 

@@ -114,21 +114,6 @@ public class PrivateMsgHandler extends Handler {
             CQ.sendPrivateMsg(fromQQ, weather.getWeatherType() + " " + weather.getLow() + "°C" + "-" + weather.getHigh() + "°C");
             return;
         }
-        if (msg.startsWith("/weather")) {
-            String content = processCommand(msg, "/weather").trim();
-            if (content.equalsIgnoreCase("") || content.isEmpty()) {
-                CQ.sendPrivateMsg(fromQQ, "请输入城市名!");
-                return;
-            }
-
-            Weather weather = WeatherUtils.request(content);
-            if (weather == null) {
-                CQ.sendPrivateMsg(fromQQ, "未找到相关数据!");
-                return;
-            }
-            CQ.sendPrivateMsg(fromQQ, weather.getWeatherType() + " " + weather.getLow() + "°C" + "-" + weather.getHigh() + "°C");
-            return;
-        }
         if (msg.startsWith("/getcover")) {
             String content = processCommand(msg, "/getcover").trim();
             if (content.equalsIgnoreCase("") || content.isEmpty()) {
