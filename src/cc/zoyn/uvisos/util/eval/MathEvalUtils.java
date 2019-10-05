@@ -16,7 +16,7 @@ public class MathEvalUtils {
         // 限制无限循环这类语句
         if (script.contains("for") || script.contains("while") || script.contains("var")
                 || script.contains("=") || script.contains("let") || script.contains("const")
-                || script.contains("function")) {
+                || script.contains("function") || script.contains("eval")) {
             throw new ScriptContainsErrorKeywordExcpetion();
         }
 
@@ -34,10 +34,8 @@ public class MathEvalUtils {
             System.out.println(eval("1*1+1"));
             System.out.println(eval("console.log(\"123\")"));
 //            eval("for(i = 0; i < 10; i++){x *=i};i");
-        } catch (ScriptException e) {
+        } catch (ScriptException | ScriptContainsErrorKeywordExcpetion e) {
             e.printStackTrace();
-        } catch (ScriptContainsErrorKeywordExcpetion scriptContainsErrorKeywordExcpetion) {
-            scriptContainsErrorKeywordExcpetion.printStackTrace();
         }
     }
 

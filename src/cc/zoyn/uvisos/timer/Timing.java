@@ -14,7 +14,6 @@ public class Timing {
 
     static {
         taskMap.put("6:00:00", new SixClockTask());
-        taskMap.put("18:06:00", new SixClockTask());
     }
 
     public void setRun(boolean run) {
