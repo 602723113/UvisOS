@@ -4,6 +4,7 @@ import cc.zoyn.uvisos.handler.ActionType;
 import cc.zoyn.uvisos.handler.GroupMsgHandler;
 import cc.zoyn.uvisos.handler.Handler;
 import cc.zoyn.uvisos.handler.PrivateMsgHandler;
+import cc.zoyn.uvisos.timer.Timing;
 import com.sobte.cqp.jcq.entity.*;
 import com.sobte.cqp.jcq.event.JcqAppAbstract;
 
@@ -83,6 +84,9 @@ public class UvisOS extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
         // 根目录
         rootFolder = dataFolder.getParentFile().getParentFile().getParentFile().getParentFile();
         imageFolder = new File(rootFolder, File.separator + "data" + File.separator + "image" + File.separator);
+
+        Timing timing = new Timing();
+        timing.startup();
         return 0;
     }
 
