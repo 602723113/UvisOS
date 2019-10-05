@@ -1,9 +1,7 @@
 package cc.zoyn.uvisos.handler;
 
 import cc.zoyn.uvisos.UvisOS;
-import cc.zoyn.uvisos.util.PingUtils;
-import cc.zoyn.uvisos.util.QRCodeUtils;
-import cc.zoyn.uvisos.util.WeatherUtils;
+import cc.zoyn.uvisos.util.*;
 import cc.zoyn.uvisos.util.eval.MathEvalUtils;
 import cc.zoyn.uvisos.util.eval.ScriptContainsErrorKeywordExcpetion;
 import com.sobte.cqp.jcq.entity.CQImage;
@@ -108,7 +106,42 @@ public class PrivateMsgHandler extends Handler {
                 return;
             }
 
-            WeatherUtils.request(content, fromQQ);
+            Weather weather = WeatherUtils.request(content);
+            if (weather == null) {
+                CQ.sendPrivateMsg(fromQQ, "未找到相关数据!");
+                return;
+            }
+            CQ.sendPrivateMsg(fromQQ, weather.getWeatherType() + " " + weather.getLow() + "°C" + "-" + weather.getHigh() + "°C");
+            return;
+        }
+        if (msg.startsWith("/weather")) {
+            String content = processCommand(msg, "/weather").trim();
+            if (content.equalsIgnoreCase("") || content.isEmpty()) {
+                CQ.sendPrivateMsg(fromQQ, "请输入城市名!");
+                return;
+            }
+
+            Weather weather = WeatherUtils.request(content);
+            if (weather == null) {
+                CQ.sendPrivateMsg(fromQQ, "未找到相关数据!");
+                return;
+            }
+            CQ.sendPrivateMsg(fromQQ, weather.getWeatherType() + " " + weather.getLow() + "°C" + "-" + weather.getHigh() + "°C");
+            return;
+        }
+        if (msg.startsWith("/getcover")) {
+            String content = processCommand(msg, "/getcover").trim();
+            if (content.equalsIgnoreCase("") || content.isEmpty()) {
+                CQ.sendPrivateMsg(fromQQ, "请输入城市名!");
+                return;
+            }
+
+            String result = BilibiliUtils.getBilibiliVideoCover(content);
+            if (result == null) {
+                CQ.sendPrivateMsg(fromQQ, "未找到相关数据!");
+                return;
+            }
+            CQ.sendPrivateMsg(fromQQ, result);
             return;
         }
 

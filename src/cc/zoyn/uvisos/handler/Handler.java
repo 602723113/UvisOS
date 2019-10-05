@@ -17,6 +17,7 @@ public abstract class Handler {
             "/deqrcode <二维码> 使用给定的二维码进行解码\n" +
             "/weather <城市名> 使用给定的城市名获取天气\n" +
             "/ping <域名/ip>:<端口>\n" +
+            "/getcover <视频av号> 根据给定的B站视频号获取封面\n"+
             "UvisOS Powered By Zoyn";
 
     private static String getWelcomeMsg() {
