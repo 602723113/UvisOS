@@ -51,7 +51,7 @@ public class UvisOS extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
         demo.enable();// 程序初始化完成后，启用应用，让应用正常工作
         demo.privateMsg(0, 10001, 602723113L, "/weather 南宁", 0);
         demo.privateMsg(0, 10002, 602723113L, "/ping 163.177.151.110:80", 0);
-        demo.privateMsg(0, 10002, 602723113L, "/ping 180.101.49.11", 0);
+        demo.privateMsg(0, 10003, 602723113L, "/bdecode IOaIkeW4puS9oOS7rOaJkw==", 0);
         // demo.disable();// 实际过程中程序结束不会触发disable，只有用户关闭了此插件才会触发
         demo.exit();// 最后程序运行结束，调用exit方法
     }
@@ -146,6 +146,10 @@ public class UvisOS extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
             Handler.sendHelp(fromQQ, fromQQ, ActionType.SEND_PRIVATE_MSG);
             return MSG_IGNORE;
         }
+        if (msg.startsWith("/code")) {
+            Handler.sendCodeHelp(fromQQ, fromQQ, ActionType.SEND_PRIVATE_MSG);
+            return MSG_IGNORE;
+        }
 
         PrivateMsgHandler.handle(subType, msgId, fromQQ, msg, font);
         return MSG_IGNORE;
@@ -169,9 +173,12 @@ public class UvisOS extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
         if (fromGroup != 766342327) {
             return MSG_IGNORE;
         }
-
         if (msg.startsWith("/help")) {
             Handler.sendHelp(fromGroup, fromQQ, ActionType.SEND_GROUP_MSG);
+            return MSG_IGNORE;
+        }
+        if (msg.startsWith("/code")) {
+            Handler.sendCodeHelp(fromQQ, fromQQ, ActionType.SEND_GROUP_MSG);
             return MSG_IGNORE;
         }
         GroupMsgHandler.handle(subType, msgId, fromGroup, fromQQ, fromAnonymous, msg, font);

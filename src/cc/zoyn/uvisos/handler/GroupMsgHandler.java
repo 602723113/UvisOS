@@ -1,6 +1,7 @@
 package cc.zoyn.uvisos.handler;
 
 import cc.zoyn.uvisos.UvisOS;
+import cc.zoyn.uvisos.timer.Timing;
 import cc.zoyn.uvisos.util.*;
 import cc.zoyn.uvisos.util.eval.MathEvalUtils;
 import cc.zoyn.uvisos.util.eval.ScriptContainsEnglishException;
@@ -115,7 +116,7 @@ public class GroupMsgHandler extends Handler {
         if (msg.startsWith("/getcover")) {
             String content = processCommand(msg, "/getcover").trim();
             if (content.equalsIgnoreCase("") || content.isEmpty()) {
-                CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "请输入城市名!");
+                CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "请输入av号!");
                 return;
             }
 
@@ -125,7 +126,75 @@ public class GroupMsgHandler extends Handler {
                 return;
             }
             CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + result);
+            return;
         }
+        if (msg.startsWith("/timing")) {
+            if (fromQQ != 602723113L) {
+                CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "你的权限不足!");
+                return;
+            }
+            String content = processCommand(msg, "/timing").trim();
+            if (content.equalsIgnoreCase("") || content.isEmpty()) {
+                CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "请输入true或false!");
+                return;
+            }
+
+            boolean result = Boolean.parseBoolean(content);
+//            System.out.println(UvisOS.getInstance().getTiming());
+            if (result) {
+                // 检测是否在关闭状态
+                if (!Timing.getInstance().isRun()) {
+                    Timing.getInstance().setRun(true);
+                    // 线程重启
+                    Timing.getInstance().startup();
+                }
+            } else {
+                Timing.getInstance().setRun(false);
+            }
+
+            CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "每日任务线程: " + result);
+            return;
+        }
+
+        if (msg.startsWith("/bencode")) {
+            String content = processCommand(msg, "/bencode").trim();
+            if (content.equalsIgnoreCase("") || content.isEmpty()) {
+                CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "请输入文本!");
+                return;
+            }
+            CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + Base64Utils.encode(content));
+            return;
+        }
+
+        if (msg.startsWith("/bdecode")) {
+            String content = processCommand(msg, "/bdecode").trim();
+            if (content.equalsIgnoreCase("") || content.isEmpty()) {
+                CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "请输入文本!");
+                return;
+            }
+            CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + Base64Utils.decode(content));
+            return;
+        }
+
+        if (msg.startsWith("/uencode")) {
+            String content = processCommand(msg, "/uencode").trim();
+            if (content.equalsIgnoreCase("") || content.isEmpty()) {
+                CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "请输入文本!");
+                return;
+            }
+            CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + UnicodeUtils.stringToUnicode(content));
+            return;
+        }
+
+        if (msg.startsWith("/udecode")) {
+            String content = processCommand(msg, "/udecode").trim();
+            if (content.equalsIgnoreCase("") || content.isEmpty()) {
+                CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "请输入文本!");
+                return;
+            }
+            CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + UnicodeUtils.unicodeToString(content));
+        }
+
     }
 
 }

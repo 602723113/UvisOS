@@ -13,11 +13,20 @@ public abstract class Handler {
     private static final String HELP_MSG = " %s\n" +
             "/help 查询帮助\n" +
             "/eval <表达式> 使用给定的数学表达式进行运算\n" +
-            "/qrcode <内容> 使用给定的内容对进行编码成二维码\n" +
-            "/deqrcode <二维码> 使用给定的二维码进行解码\n" +
             "/weather <城市名> 使用给定的城市名获取天气\n" +
             "/ping <域名/ip>:<端口>\n" +
-            "/getcover <视频av号> 根据给定的B站视频号获取封面\n"+
+            "/getcover <视频av号> 根据给定的B站视频号获取封面\n" +
+            "/timing <开关> 每日任务开关\n" +
+            "/code 转到编码帮助菜单\n" +
+            "UvisOS Powered By Zoyn";
+    private static final String CODE_HELP_MSG = " %s\n" +
+            "/qrcode <内容> 使用给定的内容对进行编码成二维码\n" +
+            "/deqrcode <二维码> 使用给定的二维码进行解码\n" +
+            "/bencode <内容> 使用给定的内容进行编码为Base64\n" +
+            "/bdecode <内容> 使用给定Base64码进行解码\n" +
+            "/uencode <内容> 使用给定的内容进行编码为Unicode\n" +
+            "/udecode <内容> 使用给定Unicode码进行解码\n" +
+            "/help 转到一般帮助菜单\n" +
             "UvisOS Powered By Zoyn";
 
     private static String getWelcomeMsg() {
@@ -56,6 +65,14 @@ public abstract class Handler {
             CQ.sendPrivateMsg(qqId, getWelcomeMsg() + String.format(HELP_MSG, CQ.getStrangerInfo(qqId).getNick()));
         } else {
             CQ.sendGroupMsg(groupId, getWelcomeMsg() + String.format(HELP_MSG, CQ.getGroupMemberInfo(groupId, qqId).getNick()));
+        }
+    }
+
+    public static void sendCodeHelp(long groupId, long qqId, ActionType type) {
+        if (type.equals(ActionType.SEND_PRIVATE_MSG)) {
+            CQ.sendPrivateMsg(qqId, getWelcomeMsg() + String.format(CODE_HELP_MSG, CQ.getStrangerInfo(qqId).getNick()));
+        } else {
+            CQ.sendGroupMsg(groupId, getWelcomeMsg() + String.format(CODE_HELP_MSG, CQ.getGroupMemberInfo(groupId, qqId).getNick()));
         }
     }
 
