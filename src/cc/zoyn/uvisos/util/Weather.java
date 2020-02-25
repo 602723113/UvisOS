@@ -3,36 +3,47 @@ package cc.zoyn.uvisos.util;
 public class Weather {
 
     private String date;
-    private String city;
     private String weatherType;
-    private String high;
-    private String low;
+    private String temp;
+    private String humidity;
+    private String wind;
+    private String windForce;
 
-    public Weather(String date, String city, String weatherType, String high, String low) {
-        this.date = date;
-        this.city = city;
-        this.weatherType = weatherType;
-        this.high = high;
-        this.low = low;
-    }
+	public Weather(String date, String weatherType, String temp, String humidity, String wind, String windForce) {
+		super();
+		this.date = date;
+		this.weatherType = weatherType;
+		this.temp = temp;
+		this.humidity = humidity;
+		this.wind = wind;
+		this.windForce = windForce;
+	}
 
-    public String getDate() {
+	public String getDate() {
         return date;
-    }
-
-    public String getCity() {
-        return city;
     }
 
     public String getWeatherType() {
         return weatherType;
     }
 
-    public String getHigh() {
-        return high;
-    }
+	public String getTemp() {
+		return temp;
+	}
 
-    public String getLow() {
-        return low;
-    }
+	public String getHumidity() {
+		return humidity;
+	}
+
+	public String getWind() {
+		return wind;
+	}
+
+	public String getWindForce() {
+		return windForce;
+	}
+	
+	
+    
+    
 }
