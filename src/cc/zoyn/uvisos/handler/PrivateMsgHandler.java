@@ -1,6 +1,7 @@
 package cc.zoyn.uvisos.handler;
 
 import cc.zoyn.uvisos.UvisOS;
+import cc.zoyn.uvisos.keyword.KeywordManager;
 import cc.zoyn.uvisos.timer.Timing;
 import cc.zoyn.uvisos.util.*;
 import cc.zoyn.uvisos.util.eval.MathEvalUtils;
@@ -20,6 +21,80 @@ import static com.sobte.cqp.jcq.event.JcqApp.CC;
 public class PrivateMsgHandler extends Handler {
 
 	public static void handle(int subType, int msgId, long fromQQ, String msg, int font) {
+		if (msg.startsWith("/添加关键词 ")) {
+			String content = processCommand(msg, "/添加关键词 ");
+			if (content.equalsIgnoreCase("") || content.isEmpty()) {
+				CQ.sendPrivateMsg(fromQQ, "请输入你要添加的内容!正确格式:/添加关键词 <关键词> <回复内容>");
+				return;
+			}
+			String[] keyAndData = content.split(" ");
+			if (keyAndData.length < 2) {
+				CQ.sendPrivateMsg(fromQQ, "请输入你要添加的内容!正确格式:/添加关键词 <关键词> <回复内容>");
+				return;
+			}
+			String key = keyAndData[0];
+			StringBuilder data = new StringBuilder();
+			for (int i = 1; i < keyAndData.length; i++) {
+				data.append(keyAndData[i]);
+			}
+			KeywordManager.setKeyword(key, data.toString());
+			CQ.sendPrivateMsg(fromQQ, "添加关键词: " + key + " 成功!");
+			return;
+		}
+		if (msg.startsWith("/修改关键词 ")) {
+			String content = processCommand(msg, "/修改关键词 ");
+			if (content.equalsIgnoreCase("") || content.isEmpty()) {
+				CQ.sendPrivateMsg(fromQQ, "请输入你要添加的内容!正确格式:/修改关键词 <关键词> <回复内容>");
+				return;
+			}
+			String[] keyAndData = content.split(" ");
+			if (keyAndData.length < 2) {
+				CQ.sendPrivateMsg(fromQQ, "请输入你要添加的内容!正确格式:/修改关键词 <关键词> <回复内容>");
+				return;
+			}
+			String key = keyAndData[0];
+			StringBuilder data = new StringBuilder();
+			for (int i = 1; i < keyAndData.length; i++) {
+				data.append(keyAndData[i]);
+			}
+			KeywordManager.setKeyword(key, data.toString());
+			CQ.sendPrivateMsg(fromQQ, "修改关键词: " + key + " 成功!");
+			return;
+		}
+		if (msg.startsWith("/删除关键词 ")) {
+			String content = processCommand(msg, "/删除关键词 ");
+			if (content.equalsIgnoreCase("") || content.isEmpty()) {
+				CQ.sendPrivateMsg(fromQQ, "请输入你要删除的关键词!正确格式:/删除关键词 <关键词>");
+				return;
+			}
+			String[] keyAndData = content.split(" ");
+			if (keyAndData.length < 1) {
+
+			}
+			String key = keyAndData[0];
+			KeywordManager.removeKeyword(key);
+			CQ.sendPrivateMsg(fromQQ, "移除关键词: " + key + " 成功!");
+			return;
+		}
+
+		if (msg.startsWith("/查看关键词")) {
+			if (fromQQ != 602723113L) {
+				CQ.sendPrivateMsg(fromQQ, "你的权限不足!");
+				return;
+			}
+			StringBuilder builder = new StringBuilder("关键词数据(共" + KeywordManager.getWords().size() + "个数据) >> \n");
+			KeywordManager.getWords().forEach((key, word) -> {
+				builder.append(key + ": " + word + "\n");
+			});
+			CQ.sendPrivateMsg(fromQQ, builder.toString());
+			return;
+		}
+		if (msg.startsWith("/读取关键词")) {
+			KeywordManager.load();
+			CQ.sendPrivateMsg(fromQQ, "读取关键词成功!");
+			return;
+		}
+
 		if (msg.startsWith("/qrcode")) {
 			String content = processCommand(msg, "/qrcode");
 			if (content.equalsIgnoreCase("") || content.isEmpty()) {
@@ -119,8 +194,10 @@ public class PrivateMsgHandler extends Handler {
 				CQ.sendPrivateMsg(fromQQ, "未找到相关数据!");
 				return;
 			}
-			CQ.sendPrivateMsg(fromQQ, weather.getWeatherType() + " " + weather.getTemp() + "°C\n" + weather.getWind()
-					+ " " + weather.getWindForce() + "\n" + "空气湿度: " + weather.getHumidity());
+			CQ.sendPrivateMsg(fromQQ,
+					"实时天气: " + weather.getWeatherType() + " " + weather.getTemp() + "°C\n" + "风向风力: "
+							+ weather.getWind() + " " + weather.getWindForce() + "\n" + "空气湿度: " + weather.getHumidity()
+							+ "\n" + "实时气压: " + weather.getStp() + "Pa");
 			return;
 		}
 		if (msg.startsWith("/getcover")) {

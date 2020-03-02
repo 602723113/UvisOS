@@ -21,16 +21,15 @@ public class WeatherUtils {
 			JsonParser parser = new JsonParser();
 			JsonElement root = parser.parse(result);
 			JsonObject object = root.getAsJsonObject();
-			System.out.println(result);
-			System.out.println(object.get("status").getAsInt());
 			if (object.get("status").getAsInt() == 0) {
 				String date = object.get("today").getAsString();
 				String type = object.get("weather").getAsString();
 				String temp = object.get("temp").getAsString();
 				String humidity = object.get("humidity").getAsString();
+				String stp = object.get("stp").getAsString();
 				String wind = object.get("wd").getAsString();
 				String windForce = object.get("wdforce").getAsString();
-				return new Weather(date, type, temp, humidity, wind, windForce);
+				return new Weather(date, type, temp, humidity, stp, wind, windForce);
 			}
 		} catch (Exception ignored) {
 		}

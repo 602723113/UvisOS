@@ -1,23 +1,87 @@
 package cc.zoyn.uvisos.handler;
 
-import cc.zoyn.uvisos.UvisOS;
-import cc.zoyn.uvisos.timer.Timing;
-import cc.zoyn.uvisos.util.*;
-import cc.zoyn.uvisos.util.eval.MathEvalUtils;
-import cc.zoyn.uvisos.util.eval.ScriptContainsEnglishException;
-import cc.zoyn.uvisos.util.eval.ScriptContainsErrorKeywordExcpetion;
-import com.sobte.cqp.jcq.entity.CQImage;
+import static com.sobte.cqp.jcq.event.JcqApp.CC;
 
-import javax.script.ScriptException;
 import java.io.File;
 import java.io.IOException;
 
-import static com.sobte.cqp.jcq.event.JcqApp.CC;
+import javax.script.ScriptException;
+
+import com.sobte.cqp.jcq.entity.CQImage;
+
+import cc.zoyn.uvisos.UvisOS;
+import cc.zoyn.uvisos.keyword.KeywordManager;
+import cc.zoyn.uvisos.timer.Timing;
+import cc.zoyn.uvisos.util.Base64Utils;
+import cc.zoyn.uvisos.util.BilibiliUtils;
+import cc.zoyn.uvisos.util.CityCode;
+import cc.zoyn.uvisos.util.PingUtils;
+import cc.zoyn.uvisos.util.QRCodeUtils;
+import cc.zoyn.uvisos.util.UnicodeUtils;
+import cc.zoyn.uvisos.util.Weather;
+import cc.zoyn.uvisos.util.WeatherUtils;
+import cc.zoyn.uvisos.util.eval.MathEvalUtils;
+import cc.zoyn.uvisos.util.eval.ScriptContainsErrorKeywordExcpetion;
 
 public class GroupMsgHandler extends Handler {
 
 	public static void handle(int subType, int msgId, long fromGroup, long fromQQ, String fromAnonymous, String msg,
 			int font) {
+		if (msg.startsWith("/添加关键词 ")) {
+			String content = processCommand(msg, "/添加关键词 ");
+			if (content.equalsIgnoreCase("") || content.isEmpty()) {
+				CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "请输入你要添加的内容!正确格式:/添加关键词 <关键词> <回复内容>");
+				return;
+			}
+			String[] keyAndData = content.split(" ");
+			if (keyAndData.length < 2) {
+				CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "请输入你要添加的内容!正确格式:/添加关键词 <关键词> <回复内容>");
+				return;
+			}
+			String key = keyAndData[0];
+			StringBuilder data = new StringBuilder();
+			for (int i = 1; i < keyAndData.length; i++) {
+				data.append(keyAndData[i]);
+			}
+			KeywordManager.setKeyword(key, data.toString());
+			CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "添加关键词: " + key + " 成功!");
+			return;
+		}
+		if (msg.startsWith("/修改关键词 ")) {
+			String content = processCommand(msg, "/修改关键词 ");
+			if (content.equalsIgnoreCase("") || content.isEmpty()) {
+				CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "请输入你要添加的内容!正确格式:/修改关键词 <关键词> <回复内容>");
+				return;
+			}
+			String[] keyAndData = content.split(" ");
+			if (keyAndData.length < 2) {
+				CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "请输入你要添加的内容!正确格式:/修改关键词 <关键词> <回复内容>");
+				return;
+			}
+			String key = keyAndData[0];
+			StringBuilder data = new StringBuilder();
+			for (int i = 1; i < keyAndData.length; i++) {
+				data.append(keyAndData[i]);
+			}
+			KeywordManager.setKeyword(key, data.toString());
+			CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "修改关键词: " + key + " 成功!");
+			return;
+		}
+		if (msg.startsWith("/删除关键词 ")) {
+			String content = processCommand(msg, "/删除关键词 ");
+			if (content.equalsIgnoreCase("") || content.isEmpty()) {
+				CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "请输入你要删除的关键词!正确格式:/删除关键词 <关键词>");
+				return;
+			}
+			String[] keyAndData = content.split(" ");
+			if (keyAndData.length < 1) {
+
+			}
+			String key = keyAndData[0];
+			KeywordManager.removeKeyword(key);
+			CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "移除关键词: " + key + " 成功!");
+			return;
+		}
 		if (msg.startsWith("/qrcode")) {
 			String content = processCommand(msg, "/qrcode");
 			if (content.equalsIgnoreCase("") || content.isEmpty()) {
@@ -117,8 +181,10 @@ public class GroupMsgHandler extends Handler {
 				CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "未找到相关数据!");
 				return;
 			}
-			CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + weather.getWeatherType() + " " + weather.getTemp() + "°C\n"
-					+ weather.getWind() + " " + weather.getWindForce() + "\n" + "空气湿度: " + weather.getHumidity());
+			CQ.sendGroupMsg(fromGroup,
+					CC.at(fromQQ) + "\n实时天气: " + weather.getWeatherType() + " " + weather.getTemp() + "°C\n" + "风向风力: "
+							+ weather.getWind() + " " + weather.getWindForce() + "\n" + "空气湿度: " + weather.getHumidity()
+							+ "\n" + "实时气压: " + weather.getStp() + "Pa");
 			return;
 		}
 		if (msg.startsWith("/getcover")) {

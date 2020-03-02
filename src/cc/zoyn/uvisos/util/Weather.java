@@ -6,15 +6,18 @@ public class Weather {
     private String weatherType;
     private String temp;
     private String humidity;
+    private String stp;
     private String wind;
     private String windForce;
-
-	public Weather(String date, String weatherType, String temp, String humidity, String wind, String windForce) {
+    
+	public Weather(String date, String weatherType, String temp, String humidity, String stp, String wind,
+			String windForce) {
 		super();
 		this.date = date;
 		this.weatherType = weatherType;
 		this.temp = temp;
 		this.humidity = humidity;
+		this.stp = stp;
 		this.wind = wind;
 		this.windForce = windForce;
 	}
@@ -33,6 +36,10 @@ public class Weather {
 
 	public String getHumidity() {
 		return humidity;
+	}
+	
+	public String getStp() {
+		return stp;
 	}
 
 	public String getWind() {
