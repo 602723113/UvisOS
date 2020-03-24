@@ -84,7 +84,7 @@ public class PrivateMsgHandler extends Handler {
 			}
 			StringBuilder builder = new StringBuilder("关键词数据(共" + KeywordManager.getWords().size() + "个数据) >> \n");
 			KeywordManager.getWords().forEach((key, word) -> {
-				builder.append(key + ": " + word + "\n");
+				builder.append("- " + key + ": " + word + "\n");
 			});
 			CQ.sendPrivateMsg(fromQQ, builder.toString());
 			return;
